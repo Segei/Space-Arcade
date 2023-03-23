@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Timers;
+using Script.Model.Interfaces;
 
-namespace Assets.Script.Model.UpdateSystem
+namespace Script.Model.UpdateSystem
 {
     public class StartUpdate
     {
@@ -19,6 +20,7 @@ namespace Assets.Script.Model.UpdateSystem
             timer.Elapsed += Update;
             timer.AutoReset = true;
             timer.Enabled = true;
+            dataTimeLastCall = DateTime.Now;
         }
 
         public void Stop()

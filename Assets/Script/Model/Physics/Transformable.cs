@@ -1,12 +1,14 @@
 ﻿using System;
-using System.Numerics;
+using Script.Model.Interfaces;
+using Script.Model.Tools;
 using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
-namespace Assets.Script.Model.Tools
+namespace Script.Model.Physics
 {
-    public abstract class Transformable : IUpdate
+    public class Transformable : IUpdate
     {
+        public float MaxSpeed;
         private float decelerationTime = 0;
         public Vector2 Velocity = new();
         public Vector2 Position = new();
@@ -17,15 +19,14 @@ namespace Assets.Script.Model.Tools
 
         public virtual void Update(float timeDelta)
         {
-            if (SecondsToStop > 0)
+            if (SecondsToStop > 0 && decelerationTime / SecondsToStop > 0)
             {
-                Velocity -= Velocity * (decelerationTime / SecondsToStop)/10;
+                Velocity -= Velocity * (decelerationTime / SecondsToStop);
             }
             if (decelerationTime < SecondsToStop)
             {
                 decelerationTime += timeDelta;
             }
-
             Velocity = Velocity.Length() > 1 ? Velocity : Vector2.Zero;
             Position += Velocity * timeDelta;
         }
@@ -42,6 +43,9 @@ namespace Assets.Script.Model.Tools
             NormalizeVelocyty();
         }
 
-        protected abstract void NormalizeVelocyty();
+        protected virtual void NormalizeVelocyty()
+        {
+            Velocity = Velocity.ClampingMagnitude(MaxSpeed);
+        }
     }
 }

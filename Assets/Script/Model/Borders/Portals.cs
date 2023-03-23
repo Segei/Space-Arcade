@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
-using Assets.Script.Model.Tools;
+using Script.Model.Interfaces;
+using Script.Model.Physics;
+using Script.Model.Tools;
 
-namespace Assets.Script.Model.Borders
+namespace Script.Model.Borders
 {
     public class Portals : IUpdate
     {

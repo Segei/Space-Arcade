@@ -1,7 +1,10 @@
 using System;
 
-public interface IUpdate
+namespace Script.Model.Interfaces
 {
-    Action<IUpdate> Remove { get; set; }
-    void Update(float timeDelta);
+    public interface IUpdate
+    {
+        Action<IUpdate> Remove { get; set; }
+        void Update(float timeDelta);
+    }
 }
