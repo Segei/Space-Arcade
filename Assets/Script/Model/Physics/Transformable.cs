@@ -1,21 +1,28 @@
 ﻿using System;
 using Script.Model.Interfaces;
 using Script.Model.Tools;
-using UnityEngine;
 using Vector2 = System.Numerics.Vector2;
 
 namespace Script.Model.Physics
 {
+    [System.Serializable]
     public class Transformable : IUpdate
     {
-        public float MaxSpeed;
+        public float MaxSpeed = 40;
         private float decelerationTime = 0;
         public Vector2 Velocity = new();
         public Vector2 Position = new();
+        public Vector2 Direction => new Vector2(0, 1).DirectionForce(Turn);
         public float Turn = 0;
         public float SecondsToStop = 0;
-        public Action<IUpdate> Remove { get; set; }
+        public float Speed => (float)Math.Round(Velocity.Length(), 0);
+        public Action<IUpdate> OnRemove { get; set; }
 
+
+        public void Remove()
+        {
+            OnRemove?.Invoke(this);
+        }
 
         public virtual void Update(float timeDelta)
         {

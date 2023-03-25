@@ -6,7 +6,7 @@ namespace Script.Model.Physics
 {
     public class DetectorCollision : IUpdate
     {
-        public Action<IUpdate> Remove { get; set; }
+        public Action<IUpdate> OnRemove { get; set; }
         private EntityContainer container;
 
 
@@ -16,34 +16,35 @@ namespace Script.Model.Physics
         }
         public void Update(float timeDelta)
         {
-            foreach (NLO nlo in container.NLOs)
+            foreach (OtherEntity nlo in container.Entity)
             {
                 CheckCollisionEnemy(nlo);
             }
-
-            foreach (OtherCollision asteroid in container.Asteroids)
-            {
-                CheckCollisionEnemy(asteroid);
-            }
-
-            foreach (OtherCollision bullet in container.Bullet)
-            {
-                bullet.CheckOnDestroy();
-            }
         }
 
-        private void CheckCollisionEnemy(OtherCollision collision)
+        private void CheckCollisionEnemy(OtherEntity entity)
         {
-            if (container.Ship.Collision.CollisionDetected(collision.Collision))
+            Ship ship = container.Ship;
+            if (ship.Collision.CollisionDetected(entity.Collision))
             {
-                container.Ship.Destroyed?.Invoke();
-            }
-            foreach (OtherCollision bullet in container.Bullet)
-            {
-                if (bullet.Collision.CollisionDetected(collision.Collision))
+                if (ship.DestroyOnColision)
                 {
-                    collision.Destroyed?.Invoke();
-                    bullet.DestroyOnEndCheck = true;
+                    ship.DestroyOnEndCheck = true;
+                }
+            }
+            foreach (OtherEntity bullet in container.Bullet)
+            {
+                if (bullet.Collision.CollisionDetected(entity.Collision))
+                {
+                    if (bullet.DestroyOnColision)
+                    {
+                        bullet.DestroyOnEndCheck = true;
+                    }
+
+                    if (entity.DestroyOnColision)
+                    {
+                        entity.DestroyOnEndCheck = true;
+                    }
                 }
             }
         }

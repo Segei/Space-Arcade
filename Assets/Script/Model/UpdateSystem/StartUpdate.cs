@@ -10,7 +10,9 @@ namespace Script.Model.UpdateSystem
         private Timer timer;
         private DateTime dataTimeLastCall;
 
-        private List<IUpdate> updates = new List<IUpdate>();
+        private List<IUpdate> updates = new();
+        private List<IUpdate> addOnLateUpdate = new();
+        public int UpdateCount => updates.Count;
         public Action OnUpdate;
         public int FramePerSecond;
 
@@ -35,27 +37,37 @@ namespace Script.Model.UpdateSystem
             timer = null;
         }
 
+        public void AddUpdateOnEnd(IUpdate update)
+        {
+            addOnLateUpdate.Add(update);
+        }
+
         public void AddListener(IUpdate update)
         {
+            update.OnRemove += RemoveListener;
             updates.Add(update);
-            update.Remove += RemoveListener;
         }
 
         private void RemoveListener(IUpdate update)
         {
-            updates.Remove(update);
-            update.Remove -= RemoveListener;
+            update.OnRemove -= RemoveListener;
+            _ = updates.Remove(update);
         }
 
         private void Update(object source, ElapsedEventArgs e)
         {
             TimeSpan timeSpan = e.SignalTime - dataTimeLastCall;
             dataTimeLastCall = e.SignalTime;
-
             foreach (IUpdate update in updates)
             {
                 update.Update((float)timeSpan.TotalSeconds);
             }
+
+            foreach (IUpdate update in addOnLateUpdate)
+            {
+                AddListener(update);
+            }
+            addOnLateUpdate.Clear();
 
             OnUpdate();
         }

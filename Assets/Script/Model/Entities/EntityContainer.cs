@@ -5,15 +5,13 @@ namespace Script.Model.Entities
     public class EntityContainer
     {
         public Ship Ship { get; set; }
-        public List<OtherCollision> Asteroids { get; set; }
-        public List<NLO> NLOs { get; set; }
-        public List<OtherCollision> Bullet { get; set; }
+        public List<OtherEntity> Entity { get; set; }
+        public List<OtherEntity> Bullet { get; set; }
 
         public EntityContainer()
         {
-            Asteroids = new List<OtherCollision>();
-            NLOs = new List<NLO>();
-            Bullet = new List<OtherCollision>();
+            Entity = new List<OtherEntity>();
+            Bullet = new List<OtherEntity>();
         }
     }
 }

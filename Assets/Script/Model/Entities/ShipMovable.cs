@@ -10,8 +10,7 @@ namespace Script.Model.Entities
 
         public void MoveForward()
         {
-            Vector2 result = new Vector2(0, 1).DirectionForce(Turn);
-            Accelerate(Vector2.Normalize(result) * Acceleration);
+            Accelerate(Vector2.Normalize(Direction) * Acceleration);
         }
 
         public void SetMaxSpeed(float value)

@@ -16,13 +16,12 @@ namespace Script.Model.Entities
 
         public void MoveForward()
         {
-            Vector2 result = new Vector2(0, 1).DirectionForce(Turn);
-            Accelerate(Vector2.Normalize(result) * Acceleration);
+            Accelerate(Vector2.Normalize(Direction) * Acceleration);
         }
 
         private void RotateToTarget(float timeDelta)
         {
-            float angelRotation = new Vector2(0, -1).DirectionForce(Turn).AngleBetweenWithDirection(Position - Target.Position);
+            float angelRotation = Direction.AngleBetweenWithDirection(Target.Position - Position);
             if (!float.IsNaN(angelRotation))
             {
                 Rotate(angelRotation * timeDelta * TurnAcceleration);

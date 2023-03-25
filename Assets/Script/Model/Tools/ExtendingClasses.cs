@@ -9,6 +9,10 @@ namespace Script.Model.Tools
         {
             return (float)Math.Clamp(value - (Math.Floor(value / maxValue) * maxValue), 0f, maxValue);
         }
+        public static int Repeat(int value, int maxValue)
+        {
+            return value > maxValue ? 0 : value;
+        }
 
         public static float GetRadians(this float value)
         {
@@ -45,6 +49,11 @@ namespace Script.Model.Tools
         public static float AngleBetween(this Vector2 direction, Vector2 target)
         { 
             return ((float)Math.Acos(Vector2.Dot(target, direction) / (direction.GetModule() * target.GetModule()))).GetEuler();         
+        }
+
+        public static bool СomparisonForSmaller(this Vector2 vector, Vector2 other)
+        {
+            return vector.X < other.X || vector.Y < other.Y;
         }
 
         public static float GetModule(this Vector2 vector)

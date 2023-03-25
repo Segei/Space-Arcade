@@ -1,23 +1,20 @@
-﻿using System;
-using Script.Model.Interfaces;
+﻿using Script.Model.Interfaces;
 using Script.Model.Physics;
 using Script.Model.Weapon;
+using UnityEngine;
 
 namespace Script.Model.Entities
 {
-    public class Ship : OtherCollision
+    public class Ship : OtherEntity
     {
-        public new ShipMovable Transformable { get; private set; }
         public IWeapon MainWeapon { get; private set; }
-        public IWeapon SecondWeapon { get; private set; }
-        
+        public IAmunition SecondWeapon { get; private set; }
 
-        public Ship()
+
+        public Ship(Transformable transformable, int maxBullet, float timeReloadBullet) : base(transformable)
         {
-            Transformable = new ShipMovable();
-            MainWeapon = new Gatling();
-            SecondWeapon = new Lazer();
-            Collision = new(Transformable);
+            MainWeapon = new Gatling(this, 0.5f);
+            SecondWeapon = new Lazer(this, 0.3f, maxBullet, timeReloadBullet);
         }
     }
 }

@@ -8,9 +8,7 @@ namespace Script.Model.Physics
         private Transformable transformable;
         public Vector2 Center => transformable.Position;
 
-        public float HalfWidth;
-        public float HalfHeight;
-
+        public Vector2 HalfSize;
 
         public Collision(Transformable value)
         {
@@ -19,9 +17,9 @@ namespace Script.Model.Physics
 
         public bool CollisionDetected(Collision other)
         {
-            return !(HalfWidth == 0.0f || HalfHeight == 0.0f || other.HalfWidth == 0.0f || other.HalfHeight == 0.0f
-        || Math.Abs(Center.X - other.Center.X) > HalfWidth + other.HalfWidth
-        || Math.Abs(Center.Y - other.Center.Y) > HalfHeight + other.HalfHeight);
+            return !(HalfSize.X == 0.0f || HalfSize.Y == 0.0f || other.HalfSize.X == 0.0f || other.HalfSize.Y == 0.0f
+        || (Math.Abs(Center.X - other.Center.X) > HalfSize.X + other.HalfSize.X
+        || Math.Abs(Center.Y - other.Center.Y) > HalfSize.Y + other.HalfSize.Y));
         }
 
 

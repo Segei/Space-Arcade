@@ -11,7 +11,7 @@ namespace Script.Model.Borders
     {
         private Vector2 border;
         private List<Transformable> transformables;
-        public Action<IUpdate> Remove { get; set; }
+        public Action<IUpdate> OnRemove { get; set; }
 
 
 
